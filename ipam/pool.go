@@ -84,6 +84,15 @@ type addressRecord struct {
 	epoch     int
 }
 
+// Utility function to reverse string
+func Reverse(s string) string {
+    runes := []rune(s)
+    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+        runes[i], runes[j] = runes[j], runes[i]
+    }
+    return string(runes)
+}
+
 //
 // AddressPoolId
 //
@@ -482,8 +491,20 @@ func (ap *addressPool) requestAddress(address string, options map[string]string)
 	}
 
 	// If no address was found, return any available address.
+	// Loop through an iterable here where adjacent items exist in different subnets
+
+	log.Printf("Custom code executing")
 	if ar == nil {
-		for _, ar = range ap.Addresses {
+		keys := make([]string, 0)
+		for k, _ = range ap.Addresses {
+			keys = append(keys, Reverse(k))
+		}
+
+		sort.Strings(keys)
+
+		for _, k := range keys {
+			ip_addr := Reverse(k)
+			ar = ap.Addresses[ip_addr]
 			if !ar.InUse && ar.ID == "" {
 				break
 			}

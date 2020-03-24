@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"sort"
 
 	"github.com/Azure/azure-container-networking/log"
 	"github.com/Azure/azure-container-networking/platform"
@@ -496,7 +497,7 @@ func (ap *addressPool) requestAddress(address string, options map[string]string)
 	log.Printf("Custom code executing")
 	if ar == nil {
 		keys := make([]string, 0)
-		for k, _ = range ap.Addresses {
+		for k, _ := range ap.Addresses {
 			keys = append(keys, Reverse(k))
 		}
 
